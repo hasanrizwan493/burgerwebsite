@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delivery Service - Burger Bliss</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#FCD34D", secondary: "#EF4444" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka+One:wght@400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .chunky-font { font-family: 'Fredoka One', cursive; }
+      .logo-font { font-family: 'Pacifico', serif; }
+      .body-font { font-family: 'Inter', sans-serif; }
+      .hero-bg {
+      background-image: url('https://readdy.ai/api/search-image?query=Professional%20food%20delivery%20service%20with%20delivery%20truck%20and%20fresh%20burgers%20in%20delivery%20boxes%2C%20modern%20cityscape%20background%2C%20bright%20yellow%20and%20black%20branding%2C%20clean%20professional%20presentation%2C%20wide%20landscape%20composition&width=1920&height=800&seq=delivery-hero&orientation=landscape');
+      background-size: cover;
+      background-position: center;
+      }
+      .map-container {
+      background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png');
+      background-size: cover;
+      background-position: center;
+      }
+      .zone-legend {
+      background: linear-gradient(135deg, rgba(252, 211, 77, 0.1), rgba(239, 68, 68, 0.1));
+      }
+      .delivery-card {
+      background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95));
+      backdrop-filter: blur(10px);
+      }
+      .custom-radio {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #FCD34D;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
+      }
+      .custom-radio:checked {
+      background-color: #FCD34D;
+      }
+      .custom-radio:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: #000;
+      border-radius: 50%;
+      }
+      .custom-checkbox {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #FCD34D;
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      }
+      .custom-checkbox:checked {
+      background-color: #FCD34D;
+      }
+      .custom-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #000;
+      font-size: 0.875rem;
+      font-weight: bold;
+      }
+      .tracking-progress {
+      background: linear-gradient(90deg, #FCD34D 0%, #FCD34D var(--progress, 0%), #374151 var(--progress, 0%), #374151 100%);
+      }
+      .address-suggestion {
+      transition: all 0.2s ease;
+      }
+      .address-suggestion:hover {
+      background-color: rgba(252, 211, 77, 0.1);
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white body-font">
+    <nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="logo-font text-2xl text-primary">Burger Bliss</div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="index.html"
+              data-readdy="true"
+              class="text-white hover:text-primary transition-colors"
+              >Back to Original</a
+            >
+            <a
+              href="#delivery-zones"
+              class="text-white hover:text-primary transition-colors"
+              >Delivery Zones</a
+            >
+            <a
+              href="#order-form"
+              class="text-white hover:text-primary transition-colors"
+              >Order Now</a
+            >
+            <a
+              href="#tracking"
+              class="text-white hover:text-primary transition-colors"
+              >Track Order</a
+            >
+          </div>
+          <div class="flex items-center space-x-4">
+            <button class="md:hidden w-6 h-6 flex items-center justify-center">
+              <i class="ri-menu-line text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="hero-bg min-h-screen flex items-center justify-center relative"
+    >
+      <div class="absolute inset-0 bg-black/60"></div>
+      <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <h1 class="chunky-font text-6xl md:text-8xl font-bold mb-6 text-white">
+          Fast <span class="text-primary">Delivery</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+          Hot, fresh burgers delivered straight to your door in 30-45 minutes
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            class="bg-primary text-black px-8 py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+            onclick="document.getElementById('delivery-zones').scrollIntoView({behavior: 'smooth'})"
+          >
+            Check Delivery Zone
+          </button>
+          <button
+            class="bg-transparent border-2 border-primary text-primary px-8 py-4 !rounded-button text-lg font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+            onclick="document.getElementById('order-form').scrollIntoView({behavior: 'smooth'})"
+          >
+            Order Now
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="delivery-zones" class="py-20 bg-black">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary"
+          >
+            Delivery Zones
+          </h2>
+          <p class="text-xl text-gray-300">
+            We deliver to these areas with different fees and times
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <div class="lg:col-span-2">
+            <div
+              class="map-container rounded-2xl h-96 relative overflow-hidden"
+            >
+              <div class="absolute inset-0 bg-black/20"></div>
+              <div class="absolute top-4 left-4 zone-legend rounded-lg p-4">
+                <h3 class="font-semibold text-white mb-3">Delivery Zones</h3>
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                    <span class="text-white">Zone 1: Free delivery</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 bg-yellow-500 rounded mr-2"></div>
+                    <span class="text-white">Zone 2: $2.99 delivery</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 bg-orange-500 rounded mr-2"></div>
+                    <span class="text-white">Zone 3: $4.99 delivery</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
+                    <span class="text-white">Zone 4: $6.99 delivery</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="absolute bottom-4 right-4 bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                onclick="getCurrentLocation()"
+              >
+                <i class="ri-map-pin-line mr-2"></i>Find My Location
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="delivery-card rounded-2xl p-6 border border-gray-800">
+              <h3 class="chunky-font text-xl text-primary mb-4">
+                Delivery Calculator
+              </h3>
+              <div class="space-y-4">
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="address-input"
+                    placeholder="Enter your delivery address..."
+                    class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none pr-10"
+                  />
+                  <button
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-primary"
+                  >
+                    <i class="ri-search-line"></i>
+                  </button>
+                  <div
+                    id="address-suggestions"
+                    class="absolute top-full left-0 right-0 bg-gray-800 border border-gray-700 rounded-b-lg hidden z-10 max-h-48 overflow-y-auto"
+                  ></div>
+                </div>
+                <div
+                  id="delivery-result"
+                  class="hidden bg-gray-800 rounded-lg p-4"
+                >
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-300">Delivery Fee:</span>
+                    <span id="delivery-fee" class="text-primary font-bold"
+                      >$2.99</span
+                    >
+                  </div>
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-gray-300">Distance:</span>
+                    <span id="delivery-distance" class="text-white"
+                      >2.3 miles</span
+                    >
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-gray-300">Estimated Time:</span>
+                    <span id="delivery-time" class="text-white"
+                      >35-45 minutes</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="delivery-card rounded-2xl p-6 border border-gray-800">
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mb-4"
+            >
+              <i class="ri-time-line text-black text-xl"></i>
+            </div>
+            <h3 class="chunky-font text-lg text-primary mb-2">
+              Delivery Hours
+            </h3>
+            <div class="space-y-1 text-sm text-gray-300">
+              <div class="flex justify-between">
+                <span>Monday - Thursday:</span>
+                <span>11:00 AM - 10:00 PM</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Friday - Saturday:</span>
+                <span>11:00 AM - 11:00 PM</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Sunday:</span>
+                <span>12:00 PM - 9:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="delivery-card rounded-2xl p-6 border border-gray-800">
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mb-4"
+            >
+              <i class="ri-shopping-bag-line text-black text-xl"></i>
+            </div>
+            <h3 class="chunky-font text-lg text-primary mb-2">Minimum Order</h3>
+            <div class="space-y-2 text-sm text-gray-300">
+              <div class="flex justify-between">
+                <span>Zone 1:</span>
+                <span class="text-primary font-semibold">$15.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Zone 2:</span>
+                <span class="text-primary font-semibold">$20.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Zone 3-4:</span>
+                <span class="text-primary font-semibold">$25.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="delivery-card rounded-2xl p-6 border border-gray-800">
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mb-4"
+            >
+              <i class="ri-truck-line text-black text-xl"></i>
+            </div>
+            <h3 class="chunky-font text-lg text-primary mb-2">
+              Delivery Times
+            </h3>
+            <div class="space-y-2 text-sm text-gray-300">
+              <div class="flex justify-between">
+                <span>Zone 1:</span>
+                <span>25-35 min</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Zone 2:</span>
+                <span>35-45 min</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Zone 3-4:</span>
+                <span>45-60 min</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="delivery-card rounded-2xl p-6 border border-gray-800">
+            <div
+              class="w-12 h-12 flex items-center justify-center bg-primary rounded-full mb-4"
+            >
+              <i class="ri-customer-service-line text-black text-xl"></i>
+            </div>
+            <h3 class="chunky-font text-lg text-primary mb-2">
+              Delivery Support
+            </h3>
+            <div class="space-y-2 text-sm text-gray-300">
+              <div class="flex items-center">
+                <i class="ri-phone-line mr-2"></i>
+                <span>(555) 123-DELIVERY</span>
+              </div>
+              <div class="flex items-center">
+                <i class="ri-mail-line mr-2"></i>
+                <span>delivery@burgerbliss.com</span>
+              </div>
+              <div class="flex items-center">
+                <i class="ri-message-line mr-2"></i>
+                <span>Live Chat Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="order-form" class="py-20 bg-gray-900">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary"
+          >
+            Order for Delivery
+          </h2>
+          <p class="text-xl text-gray-300">
+            Fill out your delivery details and we'll bring the food to you
+          </p>
+        </div>
+
+        <div class="delivery-card rounded-2xl p-8 border border-gray-800">
+          <form id="delivery-order-form" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  name="firstName"
+                  required
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Last Name</label
+                >
+                <input
+                  type="text"
+                  name="lastName"
+                  required
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Email Address</label
+                >
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Delivery Address</label
+              >
+              <input
+                type="text"
+                name="address"
+                id="delivery-address"
+                required
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                placeholder="Street address"
+              />
+              <div id="address-validation" class="mt-2 text-sm hidden">
+                <div class="flex items-center text-green-500">
+                  <i class="ri-check-line mr-2"></i>
+                  <span>Address validated - Zone 2 delivery</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Apartment/Suite</label
+                >
+                <input
+                  type="text"
+                  name="apartment"
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                  placeholder="Apt, Suite, Floor"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >City</label
+                >
+                <input
+                  type="text"
+                  name="city"
+                  required
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >ZIP Code</label
+                >
+                <input
+                  type="text"
+                  name="zipcode"
+                  required
+                  class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Delivery Instructions</label
+              >
+              <textarea
+                name="instructions"
+                rows="3"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm resize-none focus:border-primary focus:outline-none"
+                placeholder="Gate code, building entrance, special instructions..."
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-white mb-3"
+                >Preferred Delivery Time</label
+              >
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="deliveryTime"
+                    value="asap"
+                    class="custom-radio mr-3"
+                    checked
+                  />
+                  <span class="text-sm">ASAP</span>
+                </label>
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="deliveryTime"
+                    value="30min"
+                    class="custom-radio mr-3"
+                  />
+                  <span class="text-sm">30 minutes</span>
+                </label>
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="deliveryTime"
+                    value="1hour"
+                    class="custom-radio mr-3"
+                  />
+                  <span class="text-sm">1 hour</span>
+                </label>
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="deliveryTime"
+                    value="custom"
+                    class="custom-radio mr-3"
+                  />
+                  <span class="text-sm">Custom time</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="custom-time" class="hidden">
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Select Time</label
+              >
+              <input
+                type="datetime-local"
+                name="customTime"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-white mb-3"
+                >Payment Method</label
+              >
+              <div class="space-y-3">
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="card"
+                    class="custom-radio mr-4"
+                    checked
+                  />
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-primary rounded mr-3"
+                  >
+                    <i class="ri-bank-card-line text-black"></i>
+                  </div>
+                  <span>Credit/Debit Card</span>
+                </label>
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="cash"
+                    class="custom-radio mr-4"
+                  />
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-primary rounded mr-3"
+                  >
+                    <i class="ri-money-dollar-circle-line text-black"></i>
+                  </div>
+                  <span>Cash on Delivery</span>
+                </label>
+                <label
+                  class="flex items-center cursor-pointer bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-colors"
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="paypal"
+                    class="custom-radio mr-4"
+                  />
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-primary rounded mr-3"
+                  >
+                    <i class="ri-paypal-fill text-black"></i>
+                  </div>
+                  <span>PayPal</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6">
+              <h3 class="font-semibold text-white mb-4">Order Summary</h3>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-gray-300">Subtotal:</span>
+                  <span class="text-white">$0.00</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-300">Delivery Fee:</span>
+                  <span class="text-white">$0.00</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-300">Tax:</span>
+                  <span class="text-white">$0.00</span>
+                </div>
+                <div
+                  class="flex justify-between text-lg font-semibold border-t border-gray-700 pt-2"
+                >
+                  <span class="text-primary">Total:</span>
+                  <span class="text-primary">$0.00</span>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-4">
+                Estimated delivery time: 35-45 minutes
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-primary text-black py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+            >
+              Place Delivery Order
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="tracking" class="py-20 bg-black">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary"
+          >
+            Track Your Order
+          </h2>
+          <p class="text-xl text-gray-300">
+            Enter your order number to see real-time delivery status
+          </p>
+        </div>
+
+        <div class="delivery-card rounded-2xl p-8 border border-gray-800 mb-8">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              id="tracking-number"
+              placeholder="Enter order number (e.g., BB-2025-001234)"
+              class="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+            />
+            <button
+              onclick="trackOrder()"
+              class="bg-primary text-black px-8 py-3 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+            >
+              Track Order
+            </button>
+          </div>
+        </div>
+
+        <div id="tracking-result" class="hidden">
+          <div class="delivery-card rounded-2xl p-8 border border-gray-800">
+            <div class="flex justify-between items-start mb-6">
+              <div>
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Order #BB-2025-001234
+                </h3>
+                <p class="text-gray-300">
+                  Ordered at 2:30 PM • Estimated delivery: 3:15 PM
+                </p>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-bold text-primary">$28.47</div>
+                <div class="text-sm text-gray-400">Total amount</div>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-white font-semibold">Order Progress</span>
+                <span class="text-primary font-semibold">In Transit</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                <div
+                  class="tracking-progress h-2 rounded-full"
+                  style="--progress: 75%"
+                ></div>
+              </div>
+              <div class="grid grid-cols-4 gap-2 text-xs">
+                <div class="text-center">
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-primary rounded-full mx-auto mb-1"
+                  >
+                    <i class="ri-check-line text-black"></i>
+                  </div>
+                  <span class="text-primary">Confirmed</span>
+                </div>
+                <div class="text-center">
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-primary rounded-full mx-auto mb-1"
+                  >
+                    <i class="ri-restaurant-line text-black"></i>
+                  </div>
+                  <span class="text-primary">Preparing</span>
+                </div>
+                <div class="text-center">
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-primary rounded-full mx-auto mb-1"
+                  >
+                    <i class="ri-truck-line text-black"></i>
+                  </div>
+                  <span class="text-primary">In Transit</span>
+                </div>
+                <div class="text-center">
+                  <div
+                    class="w-8 h-8 flex items-center justify-center bg-gray-600 rounded-full mx-auto mb-1"
+                  >
+                    <i class="ri-home-line text-gray-400"></i>
+                  </div>
+                  <span class="text-gray-400">Delivered</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="bg-gray-800 rounded-lg p-4">
+                <h4 class="font-semibold text-white mb-3">Delivery Details</h4>
+                <div class="space-y-2 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-gray-300">Address:</span>
+                    <span class="text-white">123 Main St, Apt 4B</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-300">Phone:</span>
+                    <span class="text-white">(555) 123-4567</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-300">Instructions:</span>
+                    <span class="text-white">Ring doorbell twice</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gray-800 rounded-lg p-4">
+                <h4 class="font-semibold text-white mb-3">Driver Info</h4>
+                <div class="flex items-center mb-3">
+                  <div
+                    class="w-10 h-10 bg-primary rounded-full flex items-center justify-center mr-3"
+                  >
+                    <i class="ri-user-line text-black"></i>
+                  </div>
+                  <div>
+                    <div class="font-semibold text-white">Marcus Johnson</div>
+                    <div class="text-sm text-gray-400">Delivery Driver</div>
+                  </div>
+                </div>
+                <button
+                  class="w-full bg-gray-700 text-white py-2 !rounded-button text-sm font-semibold hover:bg-gray-600 transition-all whitespace-nowrap"
+                >
+                  <i class="ri-phone-line mr-2"></i>Call Driver
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-4">
+              <h4 class="font-semibold text-white mb-3">Order Items</h4>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <span class="text-white">Classic Bliss Burger</span>
+                    <div class="text-xs text-gray-400">Large, Extra Cheese</div>
+                  </div>
+                  <span class="text-primary font-semibold">$14.49</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <div>
+                    <span class="text-white">Classic Fries</span>
+                  </div>
+                  <span class="text-primary font-semibold">$4.99</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <div>
+                    <span class="text-white">Soft Drink</span>
+                  </div>
+                  <span class="text-primary font-semibold">$2.99</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-black py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <div class="logo-font text-3xl text-primary mb-4">Burger Bliss</div>
+            <p class="text-gray-400 mb-6">
+              Where every bite is bliss. Experience the ultimate burger
+              perfection delivered to your door.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-facebook-fill text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-instagram-line text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-twitter-line text-lg"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="index.html"
+                  data-readdy="true"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Menu</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Locations</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Services</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="dining.html"
+                  data-readdy="true"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Dine In</a
+                >
+              </li>
+              <li>
+                <a
+                  href="takeout.html"
+                  data-readdy="true"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Takeout</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-primary font-semibold">Delivery</a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Catering</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">
+              Delivery Support
+            </h3>
+            <div class="space-y-3 text-gray-400">
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span>(555) 123-DELIVERY</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span>delivery@burgerbliss.com</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-time-line"></i>
+                </div>
+                <span>11 AM - 10 PM Daily</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center">
+          <p class="text-gray-400">
+            &copy; 2025 Burger Bliss. All rights reserved. Made with ❤️ for
+            burger lovers.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script id="address-functionality">
+      document.addEventListener("DOMContentLoaded", function () {
+        const addressInput = document.getElementById("address-input");
+        const addressSuggestions = document.getElementById("address-suggestions");
+        const deliveryResult = document.getElementById("delivery-result");
+        const deliveryAddressInput = document.getElementById("delivery-address");
+        const addressValidation = document.getElementById("address-validation");
+
+        const sampleAddresses = [
+          "123 Main Street, Downtown",
+          "456 Oak Avenue, Westside",
+          "789 Pine Road, Eastside",
+          "321 Elm Street, Northside",
+          "654 Maple Drive, Southside",
+        ];
+
+        function showAddressSuggestions(input, suggestions, result) {
+          input.addEventListener("input", function () {
+            const value = this.value.toLowerCase();
+            if (value.length > 2) {
+              const filtered = sampleAddresses.filter((addr) =>
+                addr.toLowerCase().includes(value),
+              );
+              if (filtered.length > 0) {
+                suggestions.innerHTML = filtered
+                  .map(
+                    (addr) =>
+                      `<div class="address-suggestion px-4 py-2 cursor-pointer text-white hover:bg-gray-700" onclick="selectAddress('${addr}', '${input.id}', '${suggestions.id}', '${result ? result.id : ""}')">${addr}</div>`,
+                  )
+                  .join("");
+                suggestions.classList.remove("hidden");
+              } else {
+                suggestions.classList.add("hidden");
+              }
+            } else {
+              suggestions.classList.add("hidden");
+            }
+          });
+        }
+
+        showAddressSuggestions(addressInput, addressSuggestions, deliveryResult);
+        if (deliveryAddressInput && addressValidation) {
+          deliveryAddressInput.addEventListener("input", function () {
+            if (this.value.length > 10) {
+              addressValidation.classList.remove("hidden");
+            } else {
+              addressValidation.classList.add("hidden");
+            }
+          });
+        }
+
+        document.addEventListener("click", function (e) {
+          if (
+            !addressInput.contains(e.target) &&
+            !addressSuggestions.contains(e.target)
+          ) {
+            addressSuggestions.classList.add("hidden");
+          }
+        });
+      });
+
+      function selectAddress(address, inputId, suggestionsId, resultId) {
+        document.getElementById(inputId).value = address;
+        document.getElementById(suggestionsId).classList.add("hidden");
+        if (resultId) {
+          const zones = ["Free", "$2.99", "$4.99", "$6.99"];
+          const times = ["25-35", "35-45", "45-55", "55-65"];
+          const distances = ["1.2", "2.3", "3.8", "5.1"];
+          const randomIndex = Math.floor(Math.random() * 4);
+          document.getElementById("delivery-fee").textContent = zones[randomIndex];
+          document.getElementById("delivery-distance").textContent =
+            distances[randomIndex] + " miles";
+          document.getElementById("delivery-time").textContent =
+            times[randomIndex] + " minutes";
+          document.getElementById(resultId).classList.remove("hidden");
+        }
+      }
+
+      function getCurrentLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              document.getElementById("address-input").value =
+                "123 Current Location Street";
+              selectAddress(
+                "123 Current Location Street",
+                "address-input",
+                "address-suggestions",
+                "delivery-result",
+              );
+              showToast("Location found! Delivery available in your area.");
+            },
+            function () {
+              showToast(
+                "Unable to get your location. Please enter address manually.",
+              );
+            },
+          );
+        } else {
+          showToast("Geolocation is not supported by this browser.");
+        }
+      }
+    </script>
+
+    <script id="order-form-functionality">
+      document.addEventListener("DOMContentLoaded", function () {
+        const deliveryTimeRadios = document.querySelectorAll(
+          'input[name="deliveryTime"]',
+        );
+        const customTimeDiv = document.getElementById("custom-time");
+        const deliveryForm = document.getElementById("delivery-order-form");
+
+        deliveryTimeRadios.forEach((radio) => {
+          radio.addEventListener("change", function () {
+            if (this.value === "custom") {
+              customTimeDiv.classList.remove("hidden");
+              customTimeDiv.querySelector("input").required = true;
+            } else {
+              customTimeDiv.classList.add("hidden");
+              customTimeDiv.querySelector("input").required = false;
+            }
+          });
+        });
+
+        deliveryForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const submitButton = this.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+
+          submitButton.textContent = "Processing Order...";
+          submitButton.disabled = true;
+
+          setTimeout(() => {
+            submitButton.textContent = "Order Confirmed!";
+            submitButton.classList.remove("bg-primary");
+            submitButton.classList.add("bg-green-500");
+
+            setTimeout(() => {
+              showToast(
+                "Delivery order placed successfully! You will receive SMS updates.",
+              );
+              submitButton.textContent = originalText;
+              submitButton.classList.remove("bg-green-500");
+              submitButton.classList.add("bg-primary");
+              submitButton.disabled = false;
+              this.reset();
+              document
+                .getElementById("tracking")
+                .scrollIntoView({ behavior: "smooth" });
+            }, 2000);
+          }, 2000);
+        });
+      });
+    </script>
+
+    <script id="tracking-functionality">
+      function trackOrder() {
+        const trackingNumber = document.getElementById("tracking-number").value;
+        const trackingResult = document.getElementById("tracking-result");
+
+        if (trackingNumber.length > 5) {
+          trackingResult.classList.remove("hidden");
+          showToast("Order found! Tracking information updated.");
+        } else {
+          showToast("Please enter a valid order number.");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const trackingInput = document.getElementById("tracking-number");
+        trackingInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            trackOrder();
+          }
+        });
+      });
+    </script>
+
+    <script id="utility-functions">
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className =
+          "fixed top-20 right-4 bg-primary text-black px-6 py-3 rounded-lg font-semibold z-50 transform translate-x-full transition-transform";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.remove("translate-x-full"), 100);
+        setTimeout(() => {
+          toast.classList.add("translate-x-full");
+          setTimeout(() => document.body.removeChild(toast), 300);
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

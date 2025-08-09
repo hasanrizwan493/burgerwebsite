@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burger Bliss - Where Every Bite is Bliss</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#FCD34D", secondary: "#EF4444" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka+One:wght@400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .chunky-font { font-family: 'Fredoka One', cursive; }
+      .logo-font { font-family: 'Pacifico', serif; }
+      .body-font { font-family: 'Inter', sans-serif; }
+      .hero-bg {
+          background-image: url('https://readdy.ai/api/search-image?query=Premium%20gourmet%20burger%20with%20melted%20cheese%20and%20crispy%20bacon%20on%20sesame%20bun%2C%20dramatic%20black%20background%20with%20warm%20golden%20lighting%2C%20professional%20food%20photography%2C%20steam%20rising%2C%20juicy%20beef%20patty%2C%20fresh%20lettuce%20and%20tomatoes%2C%20appetizing%20presentation%2C%20high%20contrast%20lighting%2C%20modern%20culinary%20art%20style&width=1920&height=1080&seq=hero-burger&orientation=landscape');
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+      }
+      .flame-animation {
+          background: linear-gradient(45deg, #EF4444, #FCD34D, #EF4444);
+          background-size: 400% 400%;
+          animation: flame 3s ease-in-out infinite;
+      }
+      @keyframes flame {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+      }
+      .drip-effect {
+          position: relative;
+          overflow: hidden;
+      }
+      .drip-effect::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 20px;
+          height: 20px;
+          background: #FCD34D;
+          border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+          animation: drip 2s ease-in-out infinite;
+      }
+      @keyframes drip {
+          0% { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+          50% { transform: translateX(-50%) translateY(0px); opacity: 1; }
+          100% { transform: translateX(-50%) translateY(20px); opacity: 0; }
+      }
+      .glow-button:hover {
+          box-shadow: 0 0 20px rgba(252, 211, 77, 0.6);
+      }
+      .card-flip {
+          perspective: 1000px;
+      }
+      .card-flip-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          transition: transform 0.6s;
+          transform-style: preserve-3d;
+      }
+      .card-flip:hover .card-flip-inner {
+          transform: rotateY(180deg);
+      }
+      .card-flip-front, .card-flip-back {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          backface-visibility: hidden;
+      }
+      .card-flip-back {
+          transform: rotateY(180deg);
+      }
+      .horizontal-scroll {
+          overflow-x: auto;
+          scrollbar-width: thin;
+          scrollbar-color: #FCD34D #000;
+      }
+      .horizontal-scroll::-webkit-scrollbar {
+          height: 8px;
+      }
+      .horizontal-scroll::-webkit-scrollbar-track {
+          background: #000;
+      }
+      .horizontal-scroll::-webkit-scrollbar-thumb {
+          background: #FCD34D;
+          border-radius: 4px;
+      }
+      .typewriter {
+          border-right: 2px solid #FCD34D;
+          animation: blink 1s infinite;
+      }
+      @keyframes blink {
+          0%, 50% { border-color: #FCD34D; }
+          51%, 100% { border-color: transparent; }
+      }
+      .reveal-on-scroll {
+          opacity: 0;
+          transform: translateY(50px);
+          transition: all 0.8s ease;
+      }
+      .reveal-on-scroll.revealed {
+          opacity: 1;
+          transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white body-font">
+    <nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="logo-font text-2xl text-primary">Burger Bliss</div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="#home"
+              class="text-white hover:text-primary transition-colors"
+              >Home</a
+            >
+            <a
+              href="#about"
+              class="text-white hover:text-primary transition-colors"
+              >About</a
+            >
+            <a
+              href="#locations"
+              class="text-white hover:text-primary transition-colors"
+              >Locations</a
+            >
+            <a
+              href="#menu"
+              class="text-white hover:text-primary transition-colors"
+              >Menu</a
+            >
+            <a
+              href="#contact"
+              class="text-white hover:text-primary transition-colors"
+              >Contact</a
+            >
+          </div>
+          <button class="md:hidden w-6 h-6 flex items-center justify-center">
+            <i class="ri-menu-line text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      id="home"
+      class="hero-bg min-h-screen flex items-center justify-center relative"
+    >
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <h1 class="chunky-font text-6xl md:text-8xl font-bold mb-6 text-white">
+          Where Every Bite is <span class="text-primary">Bliss</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+          Experience the ultimate burger perfection with premium ingredients and
+          bold flavors
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            class="bg-primary text-black px-8 py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all glow-button whitespace-nowrap"
+          >
+            Book Now
+          </button>
+          <button
+            class="bg-transparent border-2 border-white text-white px-8 py-4 !rounded-button text-lg font-semibold hover:bg-white hover:text-black transition-all whitespace-nowrap"
+          >
+            View Menu
+          </button>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+      >
+        <i class="ri-arrow-down-line text-2xl text-primary"></i>
+      </div>
+    </section>
+
+    <section id="about" class="py-20 bg-black relative overflow-hidden">
+      <div class="flame-animation absolute top-0 left-0 right-0 h-1"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div class="reveal-on-scroll">
+            <h2
+              class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary"
+            >
+              Crafted with Passion
+            </h2>
+            <p class="text-lg text-gray-300 mb-6">
+              At Burger Bliss, we believe every burger tells a story. Our master
+              chefs handcraft each patty from premium Angus beef, sourced from
+              local farms that share our commitment to quality and
+              sustainability.
+            </p>
+            <p class="text-lg text-gray-300 mb-8">
+              From our signature flame-grilled technique to our artisanal buns
+              baked fresh daily, every element is designed to deliver an
+              unforgettable culinary experience that will leave you craving
+              more.
+            </p>
+            <div class="flex items-center space-x-8">
+              <div class="text-center">
+                <div class="chunky-font text-3xl text-primary">15+</div>
+                <div class="text-sm text-gray-400">Years Experience</div>
+              </div>
+              <div class="text-center">
+                <div class="chunky-font text-3xl text-primary">50k+</div>
+                <div class="text-sm text-gray-400">Happy Customers</div>
+              </div>
+              <div class="text-center">
+                <div class="chunky-font text-3xl text-primary">25</div>
+                <div class="text-sm text-gray-400">Signature Burgers</div>
+              </div>
+            </div>
+          </div>
+          <div class="reveal-on-scroll drip-effect">
+            <img
+              src="https://readdy.ai/api/search-image?query=Professional%20chef%20preparing%20gourmet%20burger%20in%20modern%20kitchen%2C%20hands%20placing%20fresh%20ingredients%20on%20beef%20patty%2C%20dramatic%20lighting%2C%20steam%20and%20flames%20in%20background%2C%20culinary%20artistry%2C%20high-end%20restaurant%20kitchen%20atmosphere%2C%20warm%20golden%20lighting%2C%20detailed%20food%20preparation%20process&width=600&height=600&seq=chef-cooking&orientation=squarish"
+              alt="Chef preparing burger"
+              class="w-full h-96 object-cover object-top rounded-2xl"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="locations" class="py-20 bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Find Your Bliss
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Visit our premium locations across the city
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="card-flip reveal-on-scroll">
+            <div class="card-flip-inner h-80">
+              <div
+                class="card-flip-front bg-gray-800 rounded-2xl p-6 flex flex-col"
+              >
+                <img
+                  src="https://readdy.ai/api/search-image?query=Modern%20burger%20restaurant%20exterior%20at%20night%20with%20warm%20lighting%2C%20urban%20setting%2C%20glass%20windows%20showing%20cozy%20interior%2C%20neon%20signs%2C%20contemporary%20architecture%2C%20inviting%20atmosphere%2C%20city%20street%20view%2C%20premium%20dining%20establishment&width=400&height=200&seq=location1&orientation=landscape"
+                  alt="Downtown Location"
+                  class="w-full h-32 object-cover object-top rounded-lg mb-4"
+                />
+                <h3 class="chunky-font text-2xl text-primary mb-2">
+                  Downtown District
+                </h3>
+                <p class="text-gray-300 mb-4">123 Main Street, Downtown</p>
+                <div class="text-sm text-gray-400">
+                  <p>Mon-Thu: 11AM - 10PM</p>
+                  <p>Fri-Sat: 11AM - 11PM</p>
+                  <p>Sun: 12PM - 9PM</p>
+                </div>
+              </div>
+              <div
+                class="card-flip-back bg-primary rounded-2xl p-6 flex flex-col justify-center items-center"
+              >
+                <div class="w-12 h-12 flex items-center justify-center mb-4">
+                  <i class="ri-map-pin-line text-3xl text-black"></i>
+                </div>
+                <h3 class="chunky-font text-2xl text-black mb-4">
+                  Get Directions
+                </h3>
+                <button
+                  class="bg-black text-primary px-6 py-3 !rounded-button font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap"
+                >
+                  Take Me There
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip reveal-on-scroll">
+            <div class="card-flip-inner h-80">
+              <div
+                class="card-flip-front bg-gray-800 rounded-2xl p-6 flex flex-col"
+              >
+                <img
+                  src="https://readdy.ai/api/search-image?query=Upscale%20burger%20restaurant%20in%20shopping%20mall%20food%20court%2C%20modern%20interior%20design%2C%20comfortable%20seating%20area%2C%20bright%20lighting%2C%20contemporary%20decor%2C%20busy%20atmosphere%2C%20premium%20fast-casual%20dining%20space&width=400&height=200&seq=location2&orientation=landscape"
+                  alt="Mall Location"
+                  class="w-full h-32 object-cover object-top rounded-lg mb-4"
+                />
+                <h3 class="chunky-font text-2xl text-primary mb-2">
+                  Westfield Mall
+                </h3>
+                <p class="text-gray-300 mb-4">456 Shopping Blvd, Level 2</p>
+                <div class="text-sm text-gray-400">
+                  <p>Mon-Sat: 10AM - 10PM</p>
+                  <p>Sun: 11AM - 9PM</p>
+                </div>
+              </div>
+              <div
+                class="card-flip-back bg-primary rounded-2xl p-6 flex flex-col justify-center items-center"
+              >
+                <div class="w-12 h-12 flex items-center justify-center mb-4">
+                  <i class="ri-map-pin-line text-3xl text-black"></i>
+                </div>
+                <h3 class="chunky-font text-2xl text-black mb-4">
+                  Get Directions
+                </h3>
+                <button
+                  class="bg-black text-primary px-6 py-3 !rounded-button font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap"
+                >
+                  Take Me There
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-flip reveal-on-scroll">
+            <div class="card-flip-inner h-80">
+              <div
+                class="card-flip-front bg-gray-800 rounded-2xl p-6 flex flex-col"
+              >
+                <img
+                  src="https://readdy.ai/api/search-image?query=Beachside%20burger%20restaurant%20with%20ocean%20view%2C%20outdoor%20seating%20area%2C%20palm%20trees%2C%20sunset%20lighting%2C%20coastal%20dining%20atmosphere%2C%20relaxed%20beach%20vibe%2C%20modern%20tropical%20architecture%2C%20scenic%20waterfront%20location&width=400&height=200&seq=location3&orientation=landscape"
+                  alt="Beachside Location"
+                  class="w-full h-32 object-cover object-top rounded-lg mb-4"
+                />
+                <h3 class="chunky-font text-2xl text-primary mb-2">
+                  Beachside Pier
+                </h3>
+                <p class="text-gray-300 mb-4">789 Ocean Drive, Pier 15</p>
+                <div class="text-sm text-gray-400">
+                  <p>Daily: 11AM - 11PM</p>
+                  <p>Happy Hour: 3PM - 6PM</p>
+                </div>
+              </div>
+              <div
+                class="card-flip-back bg-primary rounded-2xl p-6 flex flex-col justify-center items-center"
+              >
+                <div class="w-12 h-12 flex items-center justify-center mb-4">
+                  <i class="ri-map-pin-line text-3xl text-black"></i>
+                </div>
+                <h3 class="chunky-font text-2xl text-black mb-4">
+                  Get Directions
+                </h3>
+                <button
+                  class="bg-black text-primary px-6 py-3 !rounded-button font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap"
+                >
+                  Take Me There
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="py-20 bg-black">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Signature Menu
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Discover our handcrafted burger masterpieces
+          </p>
+        </div>
+        <div class="horizontal-scroll flex space-x-6 pb-6 overflow-x-auto">
+          <div
+            class="menu-item flex-shrink-0 w-80 bg-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+          >
+            <img
+              src="https://readdy.ai/api/search-image?query=Premium%20classic%20cheeseburger%20with%20melted%20cheddar%2C%20fresh%20lettuce%2C%20tomato%2C%20pickles%20on%20sesame%20bun%2C%20professional%20food%20photography%2C%20black%20background%2C%20dramatic%20lighting%2C%20juicy%20beef%20patty%2C%20appetizing%20presentation&width=320&height=240&seq=burger1&orientation=landscape"
+              alt="Classic Bliss Burger"
+              class="w-full h-48 object-cover object-top"
+            />
+            <div class="p-6">
+              <h3 class="chunky-font text-2xl text-primary mb-2">
+                Classic Bliss
+              </h3>
+              <p class="text-gray-300 text-sm mb-4">
+                Angus beef, aged cheddar, lettuce, tomato, special sauce
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold text-primary">$14.99</span>
+                <button
+                  class="bg-primary text-black px-4 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="menu-item flex-shrink-0 w-80 bg-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+          >
+            <img
+              src="https://readdy.ai/api/search-image?query=Spicy%20bacon%20burger%20with%20jalape%C3%B1os%2C%20pepper%20jack%20cheese%2C%20crispy%20bacon%20strips%2C%20spicy%20mayo%2C%20flame-grilled%20beef%20patty%2C%20professional%20food%20photography%2C%20black%20background%2C%20dramatic%20lighting%2C%20appetizing%20presentation&width=320&height=240&seq=burger2&orientation=landscape"
+              alt="Inferno Burger"
+              class="w-full h-48 object-cover object-top"
+            />
+            <div class="p-6">
+              <h3 class="chunky-font text-2xl text-primary mb-2">
+                Inferno Heat
+              </h3>
+              <p class="text-gray-300 text-sm mb-4">
+                Spicy beef, jalapeños, pepper jack, bacon, chipotle mayo
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold text-primary">$16.99</span>
+                <button
+                  class="bg-primary text-black px-4 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="menu-item flex-shrink-0 w-80 bg-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+          >
+            <img
+              src="https://readdy.ai/api/search-image?query=Gourmet%20mushroom%20swiss%20burger%20with%20saut%C3%A9ed%20mushrooms%2C%20swiss%20cheese%2C%20caramelized%20onions%2C%20truffle%20aioli%2C%20artisanal%20bun%2C%20professional%20food%20photography%2C%20black%20background%2C%20dramatic%20lighting%2C%20upscale%20presentation&width=320&height=240&seq=burger3&orientation=landscape"
+              alt="Truffle Mushroom Burger"
+              class="w-full h-48 object-cover object-top"
+            />
+            <div class="p-6">
+              <h3 class="chunky-font text-2xl text-primary mb-2">
+                Truffle Mushroom
+              </h3>
+              <p class="text-gray-300 text-sm mb-4">
+                Wagyu beef, truffle mushrooms, swiss, caramelized onions
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold text-primary">$19.99</span>
+                <button
+                  class="bg-primary text-black px-4 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="menu-item flex-shrink-0 w-80 bg-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+          >
+            <img
+              src="https://readdy.ai/api/search-image?query=BBQ%20bacon%20burger%20with%20onion%20rings%2C%20BBQ%20sauce%2C%20smoked%20bacon%2C%20cheddar%20cheese%2C%20crispy%20onion%20rings%20on%20top%2C%20professional%20food%20photography%2C%20black%20background%2C%20dramatic%20lighting%2C%20indulgent%20presentation&width=320&height=240&seq=burger4&orientation=landscape"
+              alt="BBQ Bacon Burger"
+              class="w-full h-48 object-cover object-top"
+            />
+            <div class="p-6">
+              <h3 class="chunky-font text-2xl text-primary mb-2">
+                BBQ Bacon Stack
+              </h3>
+              <p class="text-gray-300 text-sm mb-4">
+                Smoked beef, crispy bacon, onion rings, BBQ sauce
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold text-primary">$17.99</span>
+                <button
+                  class="bg-primary text-black px-4 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="menu-item flex-shrink-0 w-80 bg-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+          >
+            <img
+              src="https://readdy.ai/api/search-image?query=Vegetarian%20plant-based%20burger%20with%20avocado%2C%20sprouts%2C%20tomato%2C%20vegan%20cheese%2C%20quinoa%20patty%2C%20whole%20grain%20bun%2C%20professional%20food%20photography%2C%20black%20background%2C%20dramatic%20lighting%2C%20healthy%20presentation&width=320&height=240&seq=burger5&orientation=landscape"
+              alt="Plant-Based Burger"
+              class="w-full h-48 object-cover object-top"
+            />
+            <div class="p-6">
+              <h3 class="chunky-font text-2xl text-primary mb-2">
+                Garden Bliss
+              </h3>
+              <p class="text-gray-300 text-sm mb-4">
+                Plant-based patty, avocado, sprouts, vegan cheese
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-2xl font-bold text-primary">$15.99</span>
+                <button
+                  class="bg-primary text-black px-4 py-2 !rounded-button font-semibold hover:bg-yellow-400 transition-colors whitespace-nowrap"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="newsletter"
+      class="py-20 relative overflow-hidden"
+      style="background-image: url('https://readdy.ai/api/search-image?query=Retro%20cereal%20box%20pattern%20background%20with%20colorful%20cartoon%20burger%20illustrations%2C%20vintage%2080s%20style%2C%20playful%20food%20graphics%2C%20nostalgic%20breakfast%20cereal%20aesthetic%2C%20bright%20colors%2C%20repeating%20pattern%20design&width=1920&height=600&seq=newsletter-bg&orientation=landscape'); background-size: cover; background-position: center;"
+    >
+      <div class="absolute inset-0 bg-black/70"></div>
+      <div
+        class="relative z-10 max-w-2xl mx-auto text-center px-4 sm:px-6 lg:px-8"
+      >
+        <h2
+          class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+        >
+          Stay Hungry for More
+        </h2>
+        <p class="text-xl text-gray-200 mb-8 reveal-on-scroll">
+          Get exclusive deals, new menu updates, and burger secrets delivered to
+          your inbox
+        </p>
+        <div
+          class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto reveal-on-scroll"
+        >
+          <input
+            type="email"
+            placeholder="Enter your email..."
+            class="flex-1 px-6 py-4 rounded-lg bg-white/90 text-black placeholder-gray-600 border-none focus:outline-none focus:ring-2 focus:ring-primary typewriter"
+          />
+          <button
+            class="bg-primary text-black px-8 py-4 !rounded-button font-semibold hover:bg-yellow-400 transition-all glow-button whitespace-nowrap"
+          >
+            Subscribe
+          </button>
+        </div>
+        <p class="text-sm text-gray-400 mt-4">
+          No spam, just delicious updates. Unsubscribe anytime.
+        </p>
+      </div>
+    </section>
+
+    <footer class="bg-black py-16 relative overflow-hidden">
+      <div class="flame-animation absolute bottom-0 left-0 right-0 h-2"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <div class="logo-font text-3xl text-primary mb-4">Burger Bliss</div>
+            <p class="text-gray-400 mb-6">
+              Where every bite is bliss. Experience the ultimate burger
+              perfection.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all glow-button"
+              >
+                <i class="ri-facebook-fill text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all glow-button"
+              >
+                <i class="ri-instagram-line text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all glow-button"
+              >
+                <i class="ri-twitter-line text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all glow-button"
+              >
+                <i class="ri-youtube-line text-lg"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Menu</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Locations</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Services</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="dining.html"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Dine In</a
+                >
+              </li>
+              <li>
+                <a
+                  href="takeout.html"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Takeout</a
+                >
+              </li>
+              <li>
+                <a
+                  href="delivery.html"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Delivery</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Catering</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Private Events</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Contact Info</h3>
+            <div class="space-y-3 text-gray-400">
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span>(555) 123-BURGER</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span>hello@burgerbliss.com</span>
+              </div>
+              <div class="flex items-start">
+                <div class="w-5 h-5 flex items-center justify-center mr-3 mt-1">
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span>123 Main Street<br />Downtown District</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center">
+          <p class="text-gray-400">
+            &copy; 2025 Burger Bliss. All rights reserved. Made with ❤️ for
+            burger lovers.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script id="scroll-animations">
+      document.addEventListener("DOMContentLoaded", function () {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+            }
+          });
+        }, observerOptions);
+        document.querySelectorAll(".reveal-on-scroll").forEach((el) => {
+          observer.observe(el);
+        });
+      });
+    </script>
+
+    <script id="smooth-scroll">
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+      });
+    </script>
+
+    <script id="menu-interactions">
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuItems = document.querySelectorAll(".menu-item");
+
+        menuItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            const img = this.querySelector("img");
+            if (img) {
+              img.style.transform = "scale(1.1)";
+              setTimeout(() => {
+                img.style.transform = "scale(1)";
+              }, 300);
+            }
+          });
+        });
+      });
+    </script>
+
+    <script id="newsletter-form">
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector('#newsletter input[type="email"]');
+        const button = document.querySelector("#newsletter button");
+
+        if (form && button) {
+          button.addEventListener("click", function () {
+            if (form.value.includes("@")) {
+              form.value = "";
+              form.placeholder = "Thanks for subscribing!";
+              this.textContent = "Subscribed!";
+              this.classList.add("bg-green-500");
+
+              setTimeout(() => {
+                form.placeholder = "Enter your email...";
+                this.textContent = "Subscribe";
+                this.classList.remove("bg-green-500");
+              }, 3000);
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

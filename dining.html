@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dine In Experience - Burger Bliss</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#FCD34D", secondary: "#EF4444" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka+One:wght@400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .chunky-font { font-family: 'Fredoka One', cursive; }
+      .logo-font { font-family: 'Pacifico', serif; }
+      .body-font { font-family: 'Inter', sans-serif; }
+      .hero-bg {
+      background-image: url('https://readdy.ai/api/search-image?query=Elegant%20restaurant%20interior%20with%20warm%20ambient%20lighting%2C%20comfortable%20booth%20seating%2C%20modern%20decor%2C%20exposed%20brick%20walls%2C%20pendant%20lights%2C%20cozy%20dining%20atmosphere%2C%20upscale%20casual%20setting%2C%20wooden%20tables%2C%20leather%20banquettes%2C%20contemporary%20design%20elements&width=1920&height=1080&seq=dine-hero&orientation=landscape');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      }
+      .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+      }
+      .reveal-on-scroll.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .custom-checkbox {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #FCD34D;
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      }
+      .custom-checkbox:checked {
+      background-color: #FCD34D;
+      }
+      .custom-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #000;
+      font-size: 0.875rem;
+      font-weight: bold;
+      }
+      .date-picker {
+      background: #1f2937;
+      border: 2px solid #374151;
+      color: white;
+      }
+      .date-picker:focus {
+      border-color: #FCD34D;
+      outline: none;
+      }
+      .time-slot {
+      transition: all 0.3s ease;
+      }
+      .time-slot:hover {
+      transform: translateY(-2px);
+      }
+      .time-slot.selected {
+      background-color: #FCD34D;
+      color: #000;
+      }
+      .tab-button {
+      transition: all 0.3s ease;
+      }
+      .tab-button.active {
+      background-color: #FCD34D;
+      color: #000;
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white body-font">
+    <nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="logo-font text-2xl text-primary">Burger Bliss</div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="index.html"
+              data-readdy="true"
+              class="text-white hover:text-primary transition-colors"
+              >Home</a
+            >
+            <a
+              href="#menu"
+              class="text-white hover:text-primary transition-colors"
+              >Menu</a
+            >
+            <a
+              href="#locations"
+              class="text-white hover:text-primary transition-colors"
+              >Locations</a
+            >
+            <a href="#reservations" class="text-primary font-semibold"
+              >Reservations</a
+            >
+          </div>
+          <button class="md:hidden w-6 h-6 flex items-center justify-center">
+            <i class="ri-menu-line text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="hero-bg min-h-screen flex items-center justify-center relative"
+    >
+      <div class="absolute inset-0 bg-black/50"></div>
+      <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <h1 class="chunky-font text-6xl md:text-8xl font-bold mb-6 text-white">
+          Dine With <span class="text-primary">Us</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+          Experience the perfect blend of comfort, flavor, and atmosphere in our
+          thoughtfully designed dining spaces
+        </p>
+        <button
+          class="bg-primary text-black px-8 py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+          onclick="document.getElementById('reservations').scrollIntoView({behavior: 'smooth'})"
+        >
+          Make Reservation
+        </button>
+      </div>
+    </section>
+
+    <section class="py-20 bg-black">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Restaurant Ambiance
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Step into our carefully crafted dining spaces
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="reveal-on-scroll">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Cozy%20restaurant%20booth%20seating%20with%20warm%20lighting%2C%20leather%20banquettes%2C%20wooden%20table%2C%20intimate%20dining%20atmosphere%2C%20exposed%20brick%20wall%2C%20pendant%20lights%2C%20comfortable%20cushions%2C%20upscale%20casual%20decor&width=400&height=300&seq=ambiance1&orientation=landscape"
+                alt="Cozy Booth Seating"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Intimate Booth Seating
+                </h3>
+                <p class="text-gray-300 text-sm">
+                  Perfect for couples and small groups seeking privacy
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="reveal-on-scroll">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Modern%20restaurant%20main%20dining%20room%20with%20open%20layout%2C%20contemporary%20furniture%2C%20warm%20ambient%20lighting%2C%20stylish%20chairs%2C%20wooden%20tables%2C%20industrial%20ceiling%2C%20bustling%20atmosphere%2C%20family-friendly%20space&width=400&height=300&seq=ambiance2&orientation=landscape"
+                alt="Main Dining Area"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Main Dining Hall
+                </h3>
+                <p class="text-gray-300 text-sm">
+                  Spacious area ideal for families and larger groups
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="reveal-on-scroll">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Stylish%20restaurant%20bar%20area%20with%20high%20stools%2C%20marble%20counter%2C%20pendant%20lighting%2C%20bottles%20display%2C%20modern%20bar%20design%2C%20casual%20dining%20atmosphere%2C%20open%20kitchen%20view%2C%20contemporary%20decor&width=400&height=300&seq=ambiance3&orientation=landscape"
+                alt="Bar Seating Area"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Bar Counter
+                </h3>
+                <p class="text-gray-300 text-sm">
+                  Watch our chefs in action while enjoying your meal
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="reveal-on-scroll">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Restaurant%20outdoor%20patio%20seating%20with%20string%20lights%2C%20wooden%20tables%2C%20comfortable%20chairs%2C%20plants%20and%20greenery%2C%20evening%20ambiance%2C%20al%20fresco%20dining%2C%20cozy%20outdoor%20atmosphere%2C%20urban%20setting&width=400&height=300&seq=ambiance4&orientation=landscape"
+                alt="Outdoor Patio"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Outdoor Patio
+                </h3>
+                <p class="text-gray-300 text-sm">
+                  Al fresco dining under the stars
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="reveal-on-scroll">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Private%20dining%20room%20with%20elegant%20table%20setting%2C%20soft%20lighting%2C%20comfortable%20chairs%2C%20sophisticated%20decor%2C%20intimate%20atmosphere%2C%20business%20meeting%20setup%2C%20upscale%20restaurant%20interior&width=400&height=300&seq=ambiance5&orientation=landscape"
+                alt="Private Dining Room"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Private Dining
+                </h3>
+                <p class="text-gray-300 text-sm">
+                  Exclusive space for special occasions
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="reveal-on-scroll">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Restaurant%20live%20music%20stage%20area%20with%20acoustic%20setup%2C%20warm%20lighting%2C%20comfortable%20seating%20arrangement%2C%20intimate%20performance%20space%2C%20cozy%20atmosphere%2C%20evening%20entertainment%20venue&width=400&height=300&seq=ambiance6&orientation=landscape"
+                alt="Live Music Stage"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Live Music Corner
+                </h3>
+                <p class="text-gray-300 text-sm">
+                  Enjoy dinner with live acoustic performances
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Seating Options
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Choose your perfect dining experience
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-black rounded-2xl p-8 reveal-on-scroll">
+            <img
+              src="https://readdy.ai/api/search-image?query=Comfortable%20restaurant%20booth%20with%20high%20back%20seating%2C%20plush%20cushions%2C%20wooden%20table%2C%20intimate%20lighting%2C%20privacy%20screen%2C%20cozy%20atmosphere%2C%20upscale%20dining%20environment&width=300&height=200&seq=booth-seating&orientation=landscape"
+              alt="Booth Seating"
+              class="w-full h-40 object-cover object-top rounded-lg mb-6"
+            />
+            <h3 class="chunky-font text-2xl text-primary mb-4">
+              Booth Seating
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Intimate and comfortable seating perfect for dates and small
+              gatherings
+            </p>
+            <div class="space-y-2 text-sm text-gray-400">
+              <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-3">
+                  <i class="ri-user-line"></i>
+                </div>
+                <span>Capacity: 2-4 people</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-3">
+                  <i class="ri-shield-check-line"></i>
+                </div>
+                <span>Privacy level: High</span>
+              </div>
+            </div>
+            <div class="mt-6">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  name="seating"
+                  value="booth"
+                />
+                <span class="text-sm">Prefer booth seating</span>
+              </label>
+            </div>
+          </div>
+          <div class="bg-black rounded-2xl p-8 reveal-on-scroll">
+            <img
+              src="https://readdy.ai/api/search-image?query=Restaurant%20table%20seating%20with%20modern%20chairs%2C%20wooden%20table%2C%20open%20dining%20area%2C%20family-friendly%20atmosphere%2C%20comfortable%20chairs%2C%20spacious%20layout%2C%20contemporary%20design&width=300&height=200&seq=table-seating&orientation=landscape"
+              alt="Table Seating"
+              class="w-full h-40 object-cover object-top rounded-lg mb-6"
+            />
+            <h3 class="chunky-font text-2xl text-primary mb-4">
+              Table Seating
+            </h3>
+            <p class="text-gray-300 mb-4">
+              Flexible seating arrangements ideal for families and groups
+            </p>
+            <div class="space-y-2 text-sm text-gray-400">
+              <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-3">
+                  <i class="ri-user-line"></i>
+                </div>
+                <span>Capacity: 2-8 people</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-3">
+                  <i class="ri-group-line"></i>
+                </div>
+                <span>Best for: Groups & families</span>
+              </div>
+            </div>
+            <div class="mt-6">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  name="seating"
+                  value="table"
+                />
+                <span class="text-sm">Prefer table seating</span>
+              </label>
+            </div>
+          </div>
+          <div class="bg-black rounded-2xl p-8 reveal-on-scroll">
+            <img
+              src="https://readdy.ai/api/search-image?query=Restaurant%20bar%20seating%20with%20high%20stools%2C%20marble%20counter%2C%20modern%20design%2C%20open%20kitchen%20view%2C%20casual%20dining%20atmosphere%2C%20pendant%20lighting%2C%20contemporary%20bar%20setup&width=300&height=200&seq=bar-seating&orientation=landscape"
+              alt="Bar Seating"
+              class="w-full h-40 object-cover object-top rounded-lg mb-6"
+            />
+            <h3 class="chunky-font text-2xl text-primary mb-4">Bar Seating</h3>
+            <p class="text-gray-300 mb-4">
+              Front-row seats to watch our chefs create culinary magic
+            </p>
+            <div class="space-y-2 text-sm text-gray-400">
+              <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-3">
+                  <i class="ri-user-line"></i>
+                </div>
+                <span>Capacity: 1-2 people</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-3">
+                  <i class="ri-eye-line"></i>
+                </div>
+                <span>Kitchen view: Available</span>
+              </div>
+            </div>
+            <div class="mt-6">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  name="seating"
+                  value="bar"
+                />
+                <span class="text-sm">Prefer bar seating</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="locations" class="py-20 bg-black">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Dining Hours & Locations
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Find the perfect location for your dining experience
+          </p>
+        </div>
+        <div class="flex justify-center mb-8">
+          <div class="flex bg-gray-800 rounded-full p-1">
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold active"
+              data-location="downtown"
+            >
+              Downtown District
+            </button>
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold"
+              data-location="westfield"
+            >
+              Westfield Mall
+            </button>
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold"
+              data-location="beachside"
+            >
+              Beachside Pier
+            </button>
+          </div>
+        </div>
+        <div class="location-content" id="downtown-content">
+          <div class="bg-gray-900 rounded-2xl p-8 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="chunky-font text-2xl text-primary mb-4">
+                  Downtown District
+                </h3>
+                <p class="text-gray-300 mb-6">123 Main Street, Downtown</p>
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Monday - Thursday</span>
+                    <span class="text-white">11:00 AM - 10:00 PM</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Friday - Saturday</span>
+                    <span class="text-white">11:00 AM - 11:00 PM</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Sunday</span>
+                    <span class="text-white">12:00 PM - 9:00 PM</span>
+                  </div>
+                  <div class="border-t border-gray-700 pt-3 mt-4">
+                    <div class="flex justify-between">
+                      <span class="text-primary">Happy Hour</span>
+                      <span class="text-primary"
+                        >3:00 PM - 6:00 PM (Mon-Fri)</span
+                      >
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-primary">Live Music</span>
+                      <span class="text-primary"
+                        >Friday & Saturday 7:00 PM</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-white mb-4">
+                  Special Features
+                </h4>
+                <div class="space-y-3">
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-music-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300"
+                      >Live acoustic performances</span
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-wine-glass-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300"
+                      >Full bar with craft cocktails</span
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-parking-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Valet parking available</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-shirt-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Dress code: Smart casual</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="location-content hidden" id="westfield-content">
+          <div class="bg-gray-900 rounded-2xl p-8 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="chunky-font text-2xl text-primary mb-4">
+                  Westfield Mall
+                </h3>
+                <p class="text-gray-300 mb-6">456 Shopping Blvd, Level 2</p>
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Monday - Saturday</span>
+                    <span class="text-white">10:00 AM - 10:00 PM</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Sunday</span>
+                    <span class="text-white">11:00 AM - 9:00 PM</span>
+                  </div>
+                  <div class="border-t border-gray-700 pt-3 mt-4">
+                    <div class="flex justify-between">
+                      <span class="text-primary">Happy Hour</span>
+                      <span class="text-primary"
+                        >2:00 PM - 5:00 PM (Daily)</span
+                      >
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-primary">Kids Eat Free</span>
+                      <span class="text-primary"
+                        >Sunday 12:00 PM - 6:00 PM</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-white mb-4">
+                  Special Features
+                </h4>
+                <div class="space-y-3">
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-parent-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300"
+                      >Family-friendly atmosphere</span
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-shopping-bag-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Mall parking included</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-gamepad-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Kids play area nearby</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-t-shirt-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Dress code: Casual</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="location-content hidden" id="beachside-content">
+          <div class="bg-gray-900 rounded-2xl p-8 max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 class="chunky-font text-2xl text-primary mb-4">
+                  Beachside Pier
+                </h3>
+                <p class="text-gray-300 mb-6">789 Ocean Drive, Pier 15</p>
+                <div class="space-y-3">
+                  <div class="flex justify-between">
+                    <span class="text-gray-400">Daily</span>
+                    <span class="text-white">11:00 AM - 11:00 PM</span>
+                  </div>
+                  <div class="border-t border-gray-700 pt-3 mt-4">
+                    <div class="flex justify-between">
+                      <span class="text-primary">Happy Hour</span>
+                      <span class="text-primary"
+                        >3:00 PM - 6:00 PM (Daily)</span
+                      >
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-primary">Sunset Special</span>
+                      <span class="text-primary">6:00 PM - 8:00 PM</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-primary">Live Music</span>
+                      <span class="text-primary"
+                        >Thursday - Sunday 6:30 PM</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-white mb-4">
+                  Special Features
+                </h4>
+                <div class="space-y-3">
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-sun-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Ocean view seating</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-leaf-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Outdoor patio dining</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-cocktail-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Tropical cocktail menu</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3">
+                      <i class="ri-t-shirt-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Dress code: Beach casual</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reservations" class="py-20 bg-gray-900">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Make a Reservation
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Book your perfect dining experience
+          </p>
+        </div>
+        <div class="bg-black rounded-2xl p-8">
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Select Date</label
+                >
+                <input
+                  type="date"
+                  class="date-picker w-full px-4 py-3 rounded-lg text-sm"
+                  min="2025-01-01"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Party Size</label
+                >
+                <select
+                  class="date-picker w-full px-4 py-3 rounded-lg text-sm pr-8"
+                >
+                  <option>1 person</option>
+                  <option>2 people</option>
+                  <option>3 people</option>
+                  <option>4 people</option>
+                  <option>5 people</option>
+                  <option>6 people</option>
+                  <option>7 people</option>
+                  <option>8+ people</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Location</label
+              >
+              <select
+                class="date-picker w-full px-4 py-3 rounded-lg text-sm pr-8"
+              >
+                <option>Downtown District</option>
+                <option>Westfield Mall</option>
+                <option>Beachside Pier</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-white mb-4"
+                >Available Time Slots</label
+              >
+              <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  5:00 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  5:30 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  6:00 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  6:30 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  7:00 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  7:30 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  8:00 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  8:30 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  9:00 PM
+                </button>
+                <button
+                  type="button"
+                  class="time-slot bg-gray-800 text-white px-4 py-3 rounded-lg text-sm font-semibold hover:bg-primary hover:text-black transition-all whitespace-nowrap"
+                >
+                  9:30 PM
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  placeholder="Your full name"
+                  class="date-picker w-full px-4 py-3 rounded-lg text-sm"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  class="date-picker w-full px-4 py-3 rounded-lg text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                placeholder="your.email@example.com"
+                class="date-picker w-full px-4 py-3 rounded-lg text-sm"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Special Requests</label
+              >
+              <textarea
+                placeholder="Allergies, special occasions, seating preferences..."
+                rows="4"
+                class="date-picker w-full px-4 py-3 rounded-lg text-sm resize-none"
+              ></textarea>
+            </div>
+            <div class="text-center">
+              <button
+                type="submit"
+                class="bg-primary text-black px-12 py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+              >
+                Book My Table
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-black">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Dining Features
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            What makes our dining experience special
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="text-center reveal-on-scroll">
+            <div
+              class="w-16 h-16 flex items-center justify-center bg-primary rounded-full mx-auto mb-4"
+            >
+              <i class="ri-music-line text-2xl text-black"></i>
+            </div>
+            <h3 class="chunky-font text-xl text-primary mb-2">Live Music</h3>
+            <p class="text-gray-300 text-sm">
+              Enjoy acoustic performances while you dine
+            </p>
+          </div>
+          <div class="text-center reveal-on-scroll">
+            <div
+              class="w-16 h-16 flex items-center justify-center bg-primary rounded-full mx-auto mb-4"
+            >
+              <i class="ri-wine-glass-line text-2xl text-black"></i>
+            </div>
+            <h3 class="chunky-font text-xl text-primary mb-2">Happy Hour</h3>
+            <p class="text-gray-300 text-sm">
+              Special pricing on drinks and appetizers
+            </p>
+          </div>
+          <div class="text-center reveal-on-scroll">
+            <div
+              class="w-16 h-16 flex items-center justify-center bg-primary rounded-full mx-auto mb-4"
+            >
+              <i class="ri-group-line text-2xl text-black"></i>
+            </div>
+            <h3 class="chunky-font text-xl text-primary mb-2">
+              Private Events
+            </h3>
+            <p class="text-gray-300 text-sm">
+              Host your special occasions with us
+            </p>
+          </div>
+          <div class="text-center reveal-on-scroll">
+            <div
+              class="w-16 h-16 flex items-center justify-center bg-primary rounded-full mx-auto mb-4"
+            >
+              <i class="ri-award-line text-2xl text-black"></i>
+            </div>
+            <h3 class="chunky-font text-xl text-primary mb-2">
+              Premium Service
+            </h3>
+            <p class="text-gray-300 text-sm">
+              Attentive staff dedicated to your experience
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-gray-900">
+      <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+        <h2
+          class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+        >
+          Ready to Dine?
+        </h2>
+        <p class="text-xl text-gray-300 mb-8 reveal-on-scroll">
+          Reserve your table now and experience the ultimate burger dining
+          experience
+        </p>
+        <div
+          class="flex flex-col sm:flex-row gap-4 justify-center reveal-on-scroll"
+        >
+          <button
+            class="bg-primary text-black px-8 py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+            onclick="document.getElementById('reservations').scrollIntoView({behavior: 'smooth'})"
+          >
+            Make Reservation
+          </button>
+          <a
+            href="https://readdy.ai/home/63377718-5eb9-4c20-8633-fea8ea33598a/6f9ac3f7-c0f3-47fb-9cb3-21d811e6086d"
+            data-readdy="true"
+            class="bg-transparent border-2 border-white text-white px-8 py-4 !rounded-button text-lg font-semibold hover:bg-white hover:text-black transition-all whitespace-nowrap inline-block"
+          >
+            Back to Main
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-black py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <div class="logo-font text-3xl text-primary mb-4">Burger Bliss</div>
+            <p class="text-gray-400 mb-6">
+              Where every bite is bliss. Experience the ultimate burger
+              perfection.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-facebook-fill text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-instagram-line text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-twitter-line text-lg"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="index.html"
+                  data-readdy="true"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Menu</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#locations"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Locations</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Services</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-primary font-semibold">Dine In</a>
+              </li>
+              <li>
+                <a
+                  href="takeout.html"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Takeout</a
+                >
+              </li>
+              <li>
+                <a
+                  href="delivery.html"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Delivery</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Catering</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Contact Info</h3>
+            <div class="space-y-3 text-gray-400">
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span>(555) 123-BURGER</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span>reservations@burgerbliss.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center">
+          <p class="text-gray-400">
+            &copy; 2025 Burger Bliss. All rights reserved. Made with ❤️ for
+            burger lovers.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script id="scroll-animations">
+      document.addEventListener("DOMContentLoaded", function () {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+            }
+          });
+        }, observerOptions);
+        document.querySelectorAll(".reveal-on-scroll").forEach((el) => {
+          observer.observe(el);
+        });
+      });
+    </script>
+
+    <script id="location-tabs">
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabButtons = document.querySelectorAll(".tab-button");
+        const locationContents = document.querySelectorAll(".location-content");
+
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const location = this.getAttribute("data-location");
+
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            this.classList.add("active");
+            locationContents.forEach((content) => {
+              content.classList.add("hidden");
+            });
+            document.getElementById(location + "-content").classList.remove("hidden");
+          });
+        });
+      });
+    </script>
+
+    <script id="reservation-form">
+      document.addEventListener("DOMContentLoaded", function () {
+        const timeSlots = document.querySelectorAll(".time-slot");
+        const seatingCheckboxes = document.querySelectorAll('input[name="seating"]');
+        let selectedTime = null;
+
+        timeSlots.forEach((slot) => {
+          slot.addEventListener("click", function (e) {
+            e.preventDefault();
+            timeSlots.forEach((s) => s.classList.remove("selected"));
+            this.classList.add("selected");
+            selectedTime = this.textContent;
+          });
+        });
+
+        seatingCheckboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", function () {
+            if (this.checked) {
+              seatingCheckboxes.forEach((cb) => {
+                if (cb !== this) cb.checked = false;
+              });
+            }
+          });
+        });
+
+        const form = document.querySelector("#reservations form");
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.textContent = "Booking...";
+            submitButton.disabled = true;
+
+            setTimeout(() => {
+              submitButton.textContent = "Reservation Confirmed!";
+              submitButton.classList.add("bg-green-500");
+              setTimeout(() => {
+                submitButton.textContent = "Book My Table";
+                submitButton.classList.remove("bg-green-500");
+                submitButton.disabled = false;
+                form.reset();
+                timeSlots.forEach((s) => s.classList.remove("selected"));
+              }, 3000);
+            }, 2000);
+          });
+        }
+      });
+    </script>
+
+    <script id="smooth-scroll">
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Takeout Ordering - Burger Bliss</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#FCD34D", secondary: "#EF4444" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka+One:wght@400&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .chunky-font { font-family: 'Fredoka One', cursive; }
+      .logo-font { font-family: 'Pacifico', serif; }
+      .body-font { font-family: 'Inter', sans-serif; }
+      .hero-bg {
+      background-image: url('https://readdy.ai/api/search-image?query=Modern%20takeout%20ordering%20concept%20with%20fresh%20burgers%20and%20sides%20arranged%20on%20clean%20white%20background%2C%20food%20delivery%20theme%2C%20appetizing%20presentation%2C%20professional%20food%20photography%2C%20bright%20lighting%2C%20minimalist%20composition&width=1920&height=800&seq=takeout-hero&orientation=landscape');
+      background-size: cover;
+      background-position: center;
+      }
+      .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+      }
+      .reveal-on-scroll.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .cart-sidebar {
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      }
+      .cart-sidebar.open {
+      transform: translateX(0);
+      }
+      .modal {
+      display: none;
+      }
+      .modal.open {
+      display: flex;
+      }
+      .quantity-input {
+      appearance: none;
+      -moz-appearance: textfield;
+      }
+      .quantity-input::-webkit-outer-spin-button,
+      .quantity-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      }
+      .tab-button {
+      transition: all 0.3s ease;
+      }
+      .tab-button.active {
+      background-color: #FCD34D;
+      color: #000;
+      }
+      .custom-radio {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #FCD34D;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
+      }
+      .custom-radio:checked {
+      background-color: #FCD34D;
+      }
+      .custom-radio:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: #000;
+      border-radius: 50%;
+      }
+      .custom-checkbox {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #FCD34D;
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      }
+      .custom-checkbox:checked {
+      background-color: #FCD34D;
+      }
+      .custom-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #000;
+      font-size: 0.875rem;
+      font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white body-font">
+    <nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="logo-font text-2xl text-primary">Burger Bliss</div>
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="index.html"
+              data-readdy="true"
+              class="text-white hover:text-primary transition-colors"
+              >Home</a
+            >
+            <a
+              href="#menu"
+              class="text-white hover:text-primary transition-colors"
+              >Menu</a
+            >
+            <a
+              href="#locations"
+              class="text-white hover:text-primary transition-colors"
+              >Locations</a
+            >
+            <a href="#" class="text-primary font-semibold">Takeout</a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              id="cart-toggle"
+              class="relative w-10 h-10 flex items-center justify-center bg-primary rounded-full hover:bg-yellow-400 transition-all"
+            >
+              <i class="ri-shopping-cart-line text-black text-lg"></i>
+              <span
+                id="cart-count"
+                class="absolute -top-2 -right-2 bg-secondary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden"
+                >0</span
+              >
+            </button>
+            <button class="md:hidden w-6 h-6 flex items-center justify-center">
+              <i class="ri-menu-line text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="hero-bg min-h-screen flex items-center justify-center relative"
+    >
+      <div class="absolute inset-0 bg-black/60"></div>
+      <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <h1 class="chunky-font text-6xl md:text-8xl font-bold mb-6 text-white">
+          Order <span class="text-primary">Takeout</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+          Skip the wait, savor the taste. Order your favorite burgers for pickup
+          or delivery
+        </p>
+        <button
+          class="bg-primary text-black px-8 py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+          onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})"
+        >
+          Browse Menu
+        </button>
+      </div>
+    </section>
+
+    <section id="menu" class="py-20 bg-black">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2
+            class="chunky-font text-5xl md:text-6xl font-bold mb-6 text-primary reveal-on-scroll"
+          >
+            Our Menu
+          </h2>
+          <p class="text-xl text-gray-300 reveal-on-scroll">
+            Fresh ingredients, bold flavors, made to order
+          </p>
+        </div>
+
+        <div class="flex justify-center mb-12">
+          <div class="flex bg-gray-800 rounded-full p-1">
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold active"
+              data-category="burgers"
+            >
+              Burgers
+            </button>
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold"
+              data-category="sides"
+            >
+              Sides
+            </button>
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold"
+              data-category="drinks"
+            >
+              Drinks
+            </button>
+          </div>
+        </div>
+
+        <div class="category-content" id="burgers-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform reveal-on-scroll"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Gourmet%20classic%20cheeseburger%20with%20melted%20cheese%2C%20fresh%20lettuce%2C%20tomato%2C%20pickles%2C%20sesame%20seed%20bun%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=400&height=300&seq=classic-burger&orientation=landscape"
+                alt="Classic Bliss Burger"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Classic Bliss Burger
+                </h3>
+                <p class="text-gray-300 text-sm mb-4">
+                  Juicy beef patty, melted cheese, lettuce, tomato, pickles,
+                  special sauce
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-2xl font-bold text-primary">$12.99</span>
+                  <button
+                    class="bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="openCustomization('Classic Bliss Burger', 12.99, 'classic-burger')"
+                  >
+                    Customize & Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform reveal-on-scroll"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Delicious%20bacon%20cheeseburger%20with%20crispy%20bacon%20strips%2C%20melted%20cheese%2C%20fresh%20vegetables%2C%20artisan%20bun%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=400&height=300&seq=bacon-burger&orientation=landscape"
+                alt="Bacon Deluxe"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Bacon Deluxe
+                </h3>
+                <p class="text-gray-300 text-sm mb-4">
+                  Double beef patty, crispy bacon, cheddar cheese, onion rings,
+                  BBQ sauce
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-2xl font-bold text-primary">$15.99</span>
+                  <button
+                    class="bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="openCustomization('Bacon Deluxe', 15.99, 'bacon-burger')"
+                  >
+                    Customize & Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform reveal-on-scroll"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Gourmet%20mushroom%20swiss%20burger%20with%20sauteed%20mushrooms%2C%20swiss%20cheese%2C%20caramelized%20onions%2C%20artisan%20bun%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=400&height=300&seq=mushroom-burger&orientation=landscape"
+                alt="Mushroom Swiss"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Mushroom Swiss
+                </h3>
+                <p class="text-gray-300 text-sm mb-4">
+                  Beef patty, sautéed mushrooms, Swiss cheese, caramelized
+                  onions
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-2xl font-bold text-primary">$14.99</span>
+                  <button
+                    class="bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="openCustomization('Mushroom Swiss', 14.99, 'mushroom-burger')"
+                  >
+                    Customize & Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform reveal-on-scroll"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Spicy%20jalape%C3%B1o%20burger%20with%20pepper%20jack%20cheese%2C%20jalape%C3%B1os%2C%20spicy%20mayo%2C%20fresh%20vegetables%2C%20sesame%20bun%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=400&height=300&seq=spicy-burger&orientation=landscape"
+                alt="Spicy Jalapeño"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Spicy Jalapeño
+                </h3>
+                <p class="text-gray-300 text-sm mb-4">
+                  Beef patty, pepper jack cheese, jalapeños, spicy mayo, lettuce
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-2xl font-bold text-primary">$13.99</span>
+                  <button
+                    class="bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="openCustomization('Spicy Jalapeño', 13.99, 'spicy-burger')"
+                  >
+                    Customize & Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform reveal-on-scroll"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Healthy%20veggie%20burger%20with%20plant-based%20patty%2C%20avocado%2C%20sprouts%2C%20tomato%2C%20lettuce%2C%20whole%20grain%20bun%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=400&height=300&seq=veggie-burger&orientation=landscape"
+                alt="Veggie Bliss"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">
+                  Veggie Bliss
+                </h3>
+                <p class="text-gray-300 text-sm mb-4">
+                  Plant-based patty, avocado, sprouts, tomato, vegan mayo
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-2xl font-bold text-primary">$11.99</span>
+                  <button
+                    class="bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="openCustomization('Veggie Bliss', 11.99, 'veggie-burger')"
+                  >
+                    Customize & Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform reveal-on-scroll"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Gourmet%20BBQ%20burger%20with%20onion%20rings%2C%20BBQ%20sauce%2C%20cheddar%20cheese%2C%20bacon%2C%20brioche%20bun%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=400&height=300&seq=bbq-burger&orientation=landscape"
+                alt="BBQ Ranch"
+                class="w-full h-48 object-cover object-top"
+              />
+              <div class="p-6">
+                <h3 class="chunky-font text-xl text-primary mb-2">BBQ Ranch</h3>
+                <p class="text-gray-300 text-sm mb-4">
+                  Beef patty, onion rings, BBQ sauce, cheddar cheese, ranch
+                  dressing
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-2xl font-bold text-primary">$14.49</span>
+                  <button
+                    class="bg-primary text-black px-4 py-2 !rounded-button text-sm font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="openCustomization('BBQ Ranch', 14.49, 'bbq-burger')"
+                  >
+                    Customize & Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-content hidden" id="sides-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Golden%20crispy%20french%20fries%20in%20serving%20basket%2C%20perfectly%20seasoned%2C%20restaurant%20quality%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=fries&orientation=landscape"
+                alt="Classic Fries"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">
+                  Classic Fries
+                </h3>
+                <p class="text-gray-300 text-xs mb-3">Crispy golden fries</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$4.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Classic Fries', 4.99, 'fries', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Crispy%20onion%20rings%20golden%20brown%2C%20perfectly%20battered%2C%20restaurant%20style%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=onion-rings&orientation=landscape"
+                alt="Onion Rings"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">
+                  Onion Rings
+                </h3>
+                <p class="text-gray-300 text-xs mb-3">Beer-battered rings</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$5.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Onion Rings', 5.99, 'onion-rings', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Crispy%20chicken%20nuggets%20golden%20brown%2C%20bite-sized%2C%20restaurant%20quality%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=nuggets&orientation=landscape"
+                alt="Chicken Nuggets"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">
+                  Chicken Nuggets
+                </h3>
+                <p class="text-gray-300 text-xs mb-3">6-piece crispy nuggets</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$6.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Chicken Nuggets', 6.99, 'nuggets', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Fresh%20coleslaw%20salad%20with%20crisp%20cabbage%20and%20carrots%2C%20creamy%20dressing%2C%20restaurant%20side%20dish%2C%20professional%20food%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=coleslaw&orientation=landscape"
+                alt="Coleslaw"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">Coleslaw</h3>
+                <p class="text-gray-300 text-xs mb-3">Fresh cabbage salad</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$3.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Coleslaw', 3.99, 'coleslaw', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-content hidden" id="drinks-content">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Refreshing%20soft%20drink%20with%20ice%20cubes%20in%20clear%20glass%2C%20bubbles%20visible%2C%20restaurant%20beverage%2C%20professional%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=soda&orientation=portrait"
+                alt="Soft Drinks"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">
+                  Soft Drinks
+                </h3>
+                <p class="text-gray-300 text-xs mb-3">Coke, Pepsi, Sprite</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$2.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Soft Drinks', 2.99, 'soda', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Creamy%20milkshake%20in%20tall%20glass%20with%20whipped%20cream%20and%20cherry%2C%20vanilla%20flavor%2C%20restaurant%20dessert%20drink%2C%20professional%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=milkshake&orientation=portrait"
+                alt="Milkshakes"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">
+                  Milkshakes
+                </h3>
+                <p class="text-gray-300 text-xs mb-3">
+                  Vanilla, Chocolate, Strawberry
+                </p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$5.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Milkshakes', 5.99, 'milkshake', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Fresh%20iced%20tea%20in%20glass%20with%20lemon%20slice%20and%20ice%2C%20refreshing%20beverage%2C%20restaurant%20drink%2C%20professional%20photography%2C%20appetizing%20presentation%2C%20clean%20white%20background&width=300&height=200&seq=iced-tea&orientation=portrait"
+                alt="Iced Tea"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">Iced Tea</h3>
+                <p class="text-gray-300 text-xs mb-3">Sweet or Unsweetened</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$2.49</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Iced Tea', 2.49, 'iced-tea', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-2xl overflow-hidden hover:scale-105 transition-transform"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=Fresh%20bottled%20water%20with%20condensation%20droplets%2C%20clear%20plastic%20bottle%2C%20refreshing%20beverage%2C%20professional%20photography%2C%20clean%20presentation%2C%20white%20background&width=300&height=200&seq=water&orientation=portrait"
+                alt="Bottled Water"
+                class="w-full h-32 object-cover object-top"
+              />
+              <div class="p-4">
+                <h3 class="chunky-font text-lg text-primary mb-1">
+                  Bottled Water
+                </h3>
+                <p class="text-gray-300 text-xs mb-3">Premium spring water</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-primary">$1.99</span>
+                  <button
+                    class="bg-primary text-black px-3 py-1 !rounded-button text-xs font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+                    onclick="addToCart('Bottled Water', 1.99, 'water', 1)"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div
+      id="customization-modal"
+      class="modal fixed inset-0 bg-black/80 z-50 items-center justify-center"
+    >
+      <div
+        class="bg-gray-900 rounded-2xl p-8 max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="modal-title" class="chunky-font text-2xl text-primary">
+            Customize Your Burger
+          </h3>
+          <button
+            onclick="closeCustomization()"
+            class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white"
+          >
+            <i class="ri-close-line text-xl"></i>
+          </button>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Size</h4>
+            <div class="space-y-2">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="size"
+                  value="regular"
+                  class="custom-radio mr-3"
+                  checked
+                  data-price="0"
+                />
+                <span class="text-sm">Regular (+$0.00)</span>
+              </label>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="size"
+                  value="large"
+                  class="custom-radio mr-3"
+                  data-price="2.00"
+                />
+                <span class="text-sm">Large (+$2.00)</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Add-ons</h4>
+            <div class="space-y-2">
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  data-addon="extra-cheese"
+                  data-price="1.50"
+                />
+                <span class="text-sm">Extra Cheese (+$1.50)</span>
+              </label>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  data-addon="bacon"
+                  data-price="2.00"
+                />
+                <span class="text-sm">Extra Bacon (+$2.00)</span>
+              </label>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  data-addon="avocado"
+                  data-price="1.75"
+                />
+                <span class="text-sm">Avocado (+$1.75)</span>
+              </label>
+              <label class="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  class="custom-checkbox mr-3"
+                  data-addon="mushrooms"
+                  data-price="1.25"
+                />
+                <span class="text-sm">Sautéed Mushrooms (+$1.25)</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">
+              Special Instructions
+            </h4>
+            <textarea
+              id="special-instructions"
+              placeholder="Any special requests..."
+              rows="3"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm resize-none focus:border-primary focus:outline-none"
+            ></textarea>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold text-white mb-3">Quantity</h4>
+            <div class="flex items-center space-x-4">
+              <button
+                type="button"
+                onclick="decreaseQuantity()"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-subtract-line"></i>
+              </button>
+              <input
+                type="number"
+                id="quantity"
+                value="1"
+                min="1"
+                class="quantity-input w-16 text-center bg-gray-800 border border-gray-700 rounded-lg py-2 text-white"
+              />
+              <button
+                type="button"
+                onclick="increaseQuantity()"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-add-line"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-6">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-lg font-semibold text-white">Total:</span>
+              <span id="modal-total" class="text-2xl font-bold text-primary"
+                >$12.99</span
+              >
+            </div>
+            <button
+              onclick="addCustomizedToCart()"
+              class="w-full bg-primary text-black py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="cart-sidebar"
+      class="cart-sidebar fixed right-0 top-0 h-full w-96 bg-gray-900 z-40 overflow-y-auto"
+    >
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="chunky-font text-2xl text-primary">Your Order</h3>
+          <button
+            onclick="closeCart()"
+            class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white"
+          >
+            <i class="ri-close-line text-xl"></i>
+          </button>
+        </div>
+
+        <div id="cart-items" class="space-y-4 mb-6">
+          <div class="text-center text-gray-400 py-8">
+            <i class="ri-shopping-cart-line text-4xl mb-4"></i>
+            <p>Your cart is empty</p>
+          </div>
+        </div>
+
+        <div id="cart-summary" class="border-t border-gray-700 pt-4 hidden">
+          <div class="space-y-2 mb-4">
+            <div class="flex justify-between">
+              <span class="text-gray-300">Subtotal:</span>
+              <span id="subtotal" class="text-white">$0.00</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-300">Tax:</span>
+              <span id="tax" class="text-white">$0.00</span>
+            </div>
+            <div class="flex justify-between text-lg font-semibold">
+              <span class="text-primary">Total:</span>
+              <span id="total" class="text-primary">$0.00</span>
+            </div>
+          </div>
+          <button
+            onclick="proceedToCheckout()"
+            class="w-full bg-primary text-black py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="checkout-modal"
+      class="modal fixed inset-0 bg-black/80 z-50 items-center justify-center"
+    >
+      <div
+        class="bg-gray-900 rounded-2xl p-8 max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="chunky-font text-2xl text-primary">Checkout</h3>
+          <button
+            onclick="closeCheckout()"
+            class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white"
+          >
+            <i class="ri-close-line text-xl"></i>
+          </button>
+        </div>
+
+        <div class="flex justify-center mb-6">
+          <div class="flex bg-gray-800 rounded-full p-1">
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold active"
+              data-order-type="pickup"
+            >
+              Pickup
+            </button>
+            <button
+              class="tab-button px-6 py-3 rounded-full text-sm font-semibold"
+              data-order-type="delivery"
+            >
+              Delivery
+            </button>
+          </div>
+        </div>
+
+        <form id="checkout-form" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >First Name</label
+              >
+              <input
+                type="text"
+                required
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                required
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-white mb-2"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              required
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-white mb-2"
+              >Email</label
+            >
+            <input
+              type="email"
+              required
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+            />
+          </div>
+
+          <div id="delivery-address" class="hidden">
+            <label class="block text-sm font-semibold text-white mb-2"
+              >Delivery Address</label
+            >
+            <input
+              type="text"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-white mb-2"
+              >Location</label
+            >
+            <select
+              required
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:border-primary focus:outline-none pr-8"
+            >
+              <option value="">Select Location</option>
+              <option value="downtown">Downtown District</option>
+              <option value="westfield">Westfield Mall</option>
+              <option value="beachside">Beachside Pier</option>
+            </select>
+          </div>
+
+          <div class="bg-gray-800 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-white font-semibold">Estimated Time:</span>
+              <span id="estimated-time" class="text-primary font-bold"
+                >25-30 minutes</span
+              >
+            </div>
+            <p class="text-gray-400 text-sm">
+              We'll send you a confirmation with the exact pickup time
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-primary text-black py-4 !rounded-button text-lg font-semibold hover:bg-yellow-400 transition-all whitespace-nowrap"
+          >
+            Place Order
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="bg-black py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <div class="logo-font text-3xl text-primary mb-4">Burger Bliss</div>
+            <p class="text-gray-400 mb-6">
+              Where every bite is bliss. Experience the ultimate burger
+              perfection.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-facebook-fill text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-instagram-line text-lg"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary hover:text-black transition-all"
+              >
+                <i class="ri-twitter-line text-lg"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Quick Links</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="index.html"
+                  data-readdy="true"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#menu"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Menu</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Locations</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Services</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="dining.html"
+                  data-readdy="true"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Dine In</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-primary font-semibold">Takeout</a>
+              </li>
+              <li>
+                <a
+                  href="delivery.html"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Delivery</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Catering</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="chunky-font text-xl text-primary mb-4">Contact Info</h3>
+            <div class="space-y-3 text-gray-400">
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span>(555) 123-BURGER</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-5 h-5 flex items-center justify-center mr-3">
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span>orders@burgerbliss.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center">
+          <p class="text-gray-400">
+            &copy; 2025 Burger Bliss. All rights reserved. Made with ❤️ for
+            burger lovers.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script id="scroll-animations">
+      document.addEventListener("DOMContentLoaded", function () {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+            }
+          });
+        }, observerOptions);
+        document.querySelectorAll(".reveal-on-scroll").forEach((el) => {
+          observer.observe(el);
+        });
+      });
+    </script>
+
+    <script id="menu-tabs">
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabButtons = document.querySelectorAll(".tab-button[data-category]");
+        const categoryContents = document.querySelectorAll(".category-content");
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const category = this.getAttribute("data-category");
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            this.classList.add("active");
+            categoryContents.forEach((content) => {
+              content.classList.add("hidden");
+            });
+            document.getElementById(category + "-content").classList.remove("hidden");
+          });
+        });
+      });
+    </script>
+
+    <script id="cart-functionality">
+      let cart = [];
+      let currentItem = {};
+
+      function openCustomization(name, price, image) {
+        currentItem = { name, price, image };
+        document.getElementById("modal-title").textContent = `Customize ${name}`;
+        document.getElementById("modal-total").textContent = `$${price.toFixed(2)}`;
+        document.getElementById("customization-modal").classList.add("open");
+        updateModalTotal();
+      }
+
+      function closeCustomization() {
+        document.getElementById("customization-modal").classList.remove("open");
+        document
+          .getElementById("customization-modal")
+          .querySelectorAll("input")
+          .forEach((input) => {
+            if (input.type === "radio" && input.value === "regular") {
+              input.checked = true;
+            } else if (input.type === "checkbox") {
+              input.checked = false;
+            }
+          });
+        document.getElementById("quantity").value = 1;
+        document.getElementById("special-instructions").value = "";
+      }
+
+      function updateModalTotal() {
+        let total = currentItem.price;
+        const sizeRadio = document.querySelector('input[name="size"]:checked');
+        if (sizeRadio) {
+          total += parseFloat(sizeRadio.dataset.price);
+        }
+        document
+          .querySelectorAll('input[type="checkbox"]:checked')
+          .forEach((checkbox) => {
+            total += parseFloat(checkbox.dataset.price);
+          });
+        const quantity = parseInt(document.getElementById("quantity").value);
+        total *= quantity;
+        document.getElementById("modal-total").textContent = `$${total.toFixed(2)}`;
+      }
+
+      function increaseQuantity() {
+        const quantityInput = document.getElementById("quantity");
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+        updateModalTotal();
+      }
+
+      function decreaseQuantity() {
+        const quantityInput = document.getElementById("quantity");
+        if (parseInt(quantityInput.value) > 1) {
+          quantityInput.value = parseInt(quantityInput.value) - 1;
+          updateModalTotal();
+        }
+      }
+
+      function addCustomizedToCart() {
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const sizeRadio = document.querySelector('input[name="size"]:checked');
+        const addons = Array.from(
+          document.querySelectorAll('input[type="checkbox"]:checked'),
+        ).map((cb) => cb.dataset.addon);
+        const instructions = document.getElementById("special-instructions").value;
+        let price = currentItem.price;
+        if (sizeRadio) {
+          price += parseFloat(sizeRadio.dataset.price);
+        }
+        document
+          .querySelectorAll('input[type="checkbox"]:checked')
+          .forEach((checkbox) => {
+            price += parseFloat(checkbox.dataset.price);
+          });
+        const item = {
+          id: Date.now(),
+          name: currentItem.name,
+          price: price,
+          quantity: quantity,
+          size: sizeRadio ? sizeRadio.value : "regular",
+          addons: addons,
+          instructions: instructions,
+          image: currentItem.image,
+        };
+        cart.push(item);
+        updateCartDisplay();
+        closeCustomization();
+        showToast(`${item.name} added to cart!`);
+      }
+
+      function addToCart(name, price, image, quantity = 1) {
+        const item = {
+          id: Date.now(),
+          name: name,
+          price: price,
+          quantity: quantity,
+          image: image,
+        };
+        cart.push(item);
+        updateCartDisplay();
+        showToast(`${name} added to cart!`);
+      }
+
+      function removeFromCart(id) {
+        cart = cart.filter((item) => item.id !== id);
+        updateCartDisplay();
+      }
+
+      function updateCartDisplay() {
+        const cartItems = document.getElementById("cart-items");
+        const cartCount = document.getElementById("cart-count");
+        const cartSummary = document.getElementById("cart-summary");
+        if (cart.length === 0) {
+          cartItems.innerHTML = `
+      <div class="text-center text-gray-400 py-8">
+      <i class="ri-shopping-cart-line text-4xl mb-4"></i>
+      <p>Your cart is empty</p>
+      </div>
+      `;
+          cartCount.classList.add("hidden");
+          cartSummary.classList.add("hidden");
+        } else {
+          cartItems.innerHTML = cart
+            .map(
+              (item) => `
+      <div class="bg-gray-800 rounded-lg p-4">
+      <div class="flex justify-between items-start mb-2">
+      <h4 class="font-semibold text-white">${item.name}</h4>
+      <button onclick="removeFromCart(${item.id})" class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500">
+      <i class="ri-delete-bin-line"></i>
+      </button>
+      </div>
+      <div class="text-sm text-gray-300 mb-2">
+      ${item.size ? `Size: ${item.size}` : ""}
+      ${item.addons && item.addons.length > 0 ? `<br>Add-ons: ${item.addons.join(", ")}` : ""}
+      ${item.instructions ? `<br>Notes: ${item.instructions}` : ""}
+      </div>
+      <div class="flex justify-between items-center">
+      <span class="text-sm text-gray-400">Qty: ${item.quantity}</span>
+      <span class="font-semibold text-primary">$${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+      </div>
+      `,
+            )
+            .join("");
+          cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+          cartCount.classList.remove("hidden");
+          cartSummary.classList.remove("hidden");
+          const subtotal = cart.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0,
+          );
+          const tax = subtotal * 0.08;
+          const total = subtotal + tax;
+          document.getElementById("subtotal").textContent = `$${subtotal.toFixed(2)}`;
+          document.getElementById("tax").textContent = `$${tax.toFixed(2)}`;
+          document.getElementById("total").textContent = `$${total.toFixed(2)}`;
+        }
+      }
+
+      function openCart() {
+        document.getElementById("cart-sidebar").classList.add("open");
+      }
+
+      function closeCart() {
+        document.getElementById("cart-sidebar").classList.remove("open");
+      }
+
+      function proceedToCheckout() {
+        if (cart.length === 0) {
+          showToast("Your cart is empty!");
+          return;
+        }
+        document.getElementById("checkout-modal").classList.add("open");
+      }
+
+      function closeCheckout() {
+        document.getElementById("checkout-modal").classList.remove("open");
+      }
+
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className =
+          "fixed top-20 right-4 bg-primary text-black px-6 py-3 rounded-lg font-semibold z-50 transform translate-x-full transition-transform";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.remove("translate-x-full"), 100);
+        setTimeout(() => {
+          toast.classList.add("translate-x-full");
+          setTimeout(() => document.body.removeChild(toast), 300);
+        }, 3000);
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("cart-toggle").addEventListener("click", openCart);
+        document
+          .getElementById("customization-modal")
+          .addEventListener("change", updateModalTotal);
+        const orderTypeButtons = document.querySelectorAll(
+          ".tab-button[data-order-type]",
+        );
+        const deliveryAddress = document.getElementById("delivery-address");
+        orderTypeButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const orderType = this.getAttribute("data-order-type");
+            orderTypeButtons.forEach((btn) => btn.classList.remove("active"));
+            this.classList.add("active");
+            if (orderType === "delivery") {
+              deliveryAddress.classList.remove("hidden");
+              deliveryAddress.querySelector("input").required = true;
+              document.getElementById("estimated-time").textContent = "45-60 minutes";
+            } else {
+              deliveryAddress.classList.add("hidden");
+              deliveryAddress.querySelector("input").required = false;
+              document.getElementById("estimated-time").textContent = "25-30 minutes";
+            }
+          });
+        });
+        document
+          .getElementById("checkout-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const submitButton = this.querySelector('button[type="submit"]');
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+            setTimeout(() => {
+              submitButton.textContent = "Order Placed!";
+              submitButton.classList.add("bg-green-500");
+              setTimeout(() => {
+                cart = [];
+                updateCartDisplay();
+                closeCheckout();
+                closeCart();
+                submitButton.textContent = "Place Order";
+                submitButton.classList.remove("bg-green-500");
+                submitButton.disabled = false;
+                this.reset();
+                showToast(
+                  "Order placed successfully! You will receive a confirmation email.",
+                );
+              }, 2000);
+            }, 2000);
+          });
+      });
+    </script>
+  </body>
+</html>
